@@ -1,45 +1,57 @@
-function torol(gomb) {
-    const sor = gomb.parentElement.parentElement;
-    sor.remove();
-  }
-  
-  function ujSor() {
-    const nev = prompt("Név:");
-    const eletkor = prompt("Életkor:");
-    const szak = prompt("Szak:");
-  
-    if (nev && eletkor && szak) {
-      const tabla = document.getElementById("tablazat").getElementsByTagName("tbody")[0];
-      const uj = tabla.insertRow();
-      uj.innerHTML = `<td>${nev}</td><td>${eletkor}</td><td>${szak}</td><td><button onclick="torol(this)">Törlés</button></td>`;
-    }
-  }
-  
-  function rendez(oszlop) {
-    const tabla = document.getElementById("tablazat");
-    let csere = true;
-    while (csere) {
-      csere = false;
-      let sorok = tabla.rows;
-      for (let i = 1; i < sorok.length - 1; i++) {
-        let x = sorok[i].getElementsByTagName("td")[oszlop];
-        let y = sorok[i + 1].getElementsByTagName("td")[oszlop];
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          sorok[i].parentNode.insertBefore(sorok[i + 1], sorok[i]);
-          csere = true;
-          break;
-        }
-      }
-    }
-  }
-  
-  document.getElementById("szures").addEventListener("keyup", function() {
-    const szoveg = this.value.toLowerCase();
-    const sorok = document.querySelectorAll("#tablazat tbody tr");
-  
-    sorok.forEach(sor => {
-      const nev = sor.cells[0].textContent.toLowerCase();
-      sor.style.display = nev.includes(szoveg) ? "" : "none";
+let rekordok = [];
+
+function hozzaadRekord() {
+    const nevInput = document.getElementById("nev");
+    const korInput = document.getElementById("kor");
+    const nev = nevInput.value.trim();
+    const kor = parseInt(korInput.value.trim());
+
+    if (nev === "" || isNaN(kor)) return;
+
+    rekordok.push({ nev, kor });
+    nevInput.value = "";
+    korInput.value = "";
+    frissitTabla();
+}
+
+function torolRekord(index) {
+    rekordok.splice(index, 1);
+    frissitTabla();
+}
+
+function frissitTabla() {
+    const tablaTorzs = document.getElementById("tabla-torzs");
+    tablaTorzs.innerHTML = "";
+
+    rekordok.forEach((rekord, index) => {
+        const sor = document.createElement("tr");
+
+        const nevCella = document.createElement("td");
+        nevCella.textContent = rekord.nev;
+
+        const korCella = document.createElement("td");
+        korCella.textContent = rekord.kor;
+
+        const torlesCella = document.createElement("td");
+        const torlesGomb = document.createElement("button");
+        torlesGomb.textContent = "Törlés";
+        torlesGomb.onclick = () => torolRekord(index);
+        torlesCella.appendChild(torlesGomb);
+
+        sor.appendChild(nevCella);
+        sor.appendChild(korCella);
+        sor.appendChild(torlesCella);
+
+        tablaTorzs.appendChild(sor);
     });
-  });
-  
+}
+
+function szures() {
+    const kereso = document.getElementById("kereses").value.toLowerCase();
+    const sorok = document.getElementById("tabla-torzs").getElementsByTagName("tr");
+
+    for (let sor of sorok) {
+        const nev = sor.cells[0].textContent.toLowerCase();
+        sor.style.display = nev.includes(kereso) ? "" : "none";
+    }
+}
