@@ -1,77 +1,49 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <title>Táblázat kezelése</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Táblázat</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Táblázat kezelése</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Kezdőlap</a></li>
-        <li><a href="tablazat.html" class="aktiv">Táblázat</a></li>
-        <li><a href="chart.html">Diagram</a></li>
-        <li><a href="html5.html">HTML5 API</a></li>
-      </ul>
-    </nav>
-  </header>
+    <header>
+        <h1>Táblázat – Név és életkor</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Kezdőlap</a></li>
+                <li><a href="tablazat.html" class="aktiv">Táblázat</a></li>
+                <li><a href="chart.html">Diagram</a></li>
+                <li><a href="html5.html">HTML5 API</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <main>
-    <section>
-      <h2>Felhasználók</h2>
-      <input type="text" id="kereses" placeholder="Keresés névre...">
-      <table id="tabla">
-        <thead>
-          <tr>
-            <th>Név</th>
-            <th>Kor</th>
-            <th>Művelet</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <main>
+        <input type="text" id="szuro" placeholder="Szűrés név alapján">
+        <br><br>
 
-      <h3>Új felhasználó hozzáadása</h3>
-      <input type="text" id="nev" placeholder="Név">
-      <input type="number" id="kor" placeholder="Kor">
-      <button onclick="hozzaad()">Hozzáadás</button>
-    </section>
-  </main>
+        <input type="text" id="nev" placeholder="Név">
+        <input type="number" id="eletkor" placeholder="Életkor">
+        <button id="hozzaad">Hozzáadás</button>
 
-  <footer>
-    <p>&copy; 2025 Webprogramozás 1</p>
-  </footer>
+        <table>
+            <thead>
+                <tr>
+                    <th>Név</th>
+                    <th>Életkor</th>
+                    <th>Művelet</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-tartalom">
+                <!-- Sorok ide kerülnek -->
+            </tbody>
+        </table>
+    </main>
 
-  <script>
-    const tabla = document.querySelector("#tabla tbody");
-    const keres = document.getElementById("kereses");
+    <footer>
+        <p>&copy; 2025 Webprogramozás 1 Beadandó</p>
+    </footer>
 
-    function hozzaad() {
-      const nev = document.getElementById("nev").value;
-      const kor = document.getElementById("kor").value;
-      if (!nev || !kor) return;
-
-      const sor = tabla.insertRow();
-      sor.insertCell().innerText = nev;
-      sor.insertCell().innerText = kor;
-      const torolGomb = document.createElement("button");
-      torolGomb.innerText = "Törlés";
-      torolGomb.onclick = () => sor.remove();
-      sor.insertCell().appendChild(torolGomb);
-
-      document.getElementById("nev").value = "";
-      document.getElementById("kor").value = "";
-    }
-
-    keres.addEventListener("input", () => {
-      const ertek = keres.value.toLowerCase();
-      for (let sor of tabla.rows) {
-        const nev = sor.cells[0].innerText.toLowerCase();
-        sor.style.display = nev.includes(ertek) ? "" : "none";
-      }
-    });
-  </script>
+    <script src="tablazat.js"></script>
 </body>
 </html>

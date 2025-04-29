@@ -1,65 +1,83 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <title>HTML5 API</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>HTML5 API-k</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>HTML5 API bemutató</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Kezdőlap</a></li>
-        <li><a href="tablazat.html">Táblázat</a></li>
-        <li><a href="chart.html">Diagram</a></li>
-        <li><a href="html5.html" class="aktiv">HTML5 API</a></li>
-      </ul>
-    </nav>
-  </header>
+    <header>
+        <h1>HTML5 API-k</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Kezdőlap</a></li>
+                <li><a href="tablazat.html">Táblázat</a></li>
+                <li><a href="chart.html">Diagram</a></li>
+                <li><a href="html5.html" class="aktiv">HTML5 API</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <main>
-    <section>
-      <h2>Geolocation</h2>
-      <button onclick="getHely()">Helyzetem megjelenítése</button>
-      <p id="hely"></p>
+    <main>
+        <section>
+            <h2>Geolocation</h2>
+            <button onclick="mutatHely()">Helyzet lekérése</button>
+            <p id="hely"></p>
 
-      <h2>LocalStorage</h2>
-      <input type="text" id="adat" placeholder="Írj be adatot...">
-      <button onclick="mentes()">Mentés</button>
-      <button onclick="betolt()">Betöltés</button>
-      <p id="mentett"></p>
-    </section>
-  </main>
+            <h2>LocalStorage</h2>
+            <input type="text" id="adat" placeholder="Írj be valamit...">
+            <button onclick="mentes()">Mentés</button>
+            <button onclick="betoltes()">Betöltés</button>
+            <p id="kimentett"></p>
+        </section>
+    </main>
 
-  <footer>
-    <p>&copy; 2025 Webprogramozás 1</p>
-  </footer>
+    <footer>
+        <p>&copy; 2025 Webprogramozás 1</p>
+    </footer>
 
-  <script>
-    function getHely() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          pos => {
-            document.getElementById("hely").innerText = 
-              `Szélesség: ${pos.coords.latitude}, Hosszúság: ${pos.coords.longitude}`;
-          },
-          () => alert("Hozzáférés megtagadva.")
-        );
-      } else {
-        alert("A böngésző nem támogatja a Geolocation API-t.");
-      }
-    }
+    <script>
+        function mutatHely() {
+            const kijelzo = document.getElementById("hely");
 
-    function mentes() {
-      const adat = document.getElementById("adat").value;
-      localStorage.setItem("adat", adat);
-    }
+            if (!navigator.geolocation) {
+                kijelzo.textContent = "A böngésző nem támogatja a geolocation API-t.";
+                return;
+            }
 
-    function betolt() {
-      const adat = localStorage.getItem("adat");
-      document.getElementById("mentett").innerText = adat ?? "Nincs mentett adat.";
-    }
-  </script>
+            navigator.geolocation.getCurrentPosition(
+                pozicio => {
+                    const lat = pozicio.coords.latitude.toFixed(4);
+                    const lon = pozicio.coords.longitude.toFixed(4);
+                    kijelzo.textContent = `Szélesség: ${lat}, Hosszúság: ${lon}`;
+                },
+                hiba => {
+                    switch (hiba.code) {
+                        case 1:
+                            kijelzo.textContent = "Hozzáférés megtagadva a helyadatokhoz.";
+                            break;
+                        case 2:
+                            kijelzo.textContent = "A hely nem állapítható meg.";
+                            break;
+                        case 3:
+                            kijelzo.textContent = "A helymeghatározás időtúllépés miatt sikertelen.";
+                            break;
+                        default:
+                            kijelzo.textContent = "Ismeretlen hiba.";
+                    }
+                }
+            );
+        }
+
+        function mentes() {
+            const szoveg = document.getElementById("adat").value;
+            localStorage.setItem("adat", szoveg);
+        }
+
+        function betoltes() {
+            const adat = localStorage.getItem("adat");
+            document.getElementById("kimentett").textContent = "Mentett adat: " + (adat || "Nincs adat mentve.");
+        }
+    </script>
 </body>
 </html>

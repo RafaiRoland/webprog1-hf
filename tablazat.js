@@ -1,57 +1,47 @@
-let rekordok = [];
+const nevInput = document.getElementById("nev");
+const eletkorInput = document.getElementById("eletkor");
+const hozzaadGomb = document.getElementById("hozzaad");
+const tablaTartalom = document.getElementById("tabla-tartalom");
+const szuroInput = document.getElementById("szuro");
 
-function hozzaadRekord() {
-    const nevInput = document.getElementById("nev");
-    const korInput = document.getElementById("kor");
+hozzaadGomb.addEventListener("click", () => {
     const nev = nevInput.value.trim();
-    const kor = parseInt(korInput.value.trim());
+    const eletkor = eletkorInput.value.trim();
 
-    if (nev === "" || isNaN(kor)) return;
+    if (nev === "" || eletkor === "") return;
 
-    rekordok.push({ nev, kor });
-    nevInput.value = "";
-    korInput.value = "";
-    frissitTabla();
-}
+    const sor = document.createElement("tr");
 
-function torolRekord(index) {
-    rekordok.splice(index, 1);
-    frissitTabla();
-}
+    const nevCella = document.createElement("td");
+    nevCella.textContent = nev;
 
-function frissitTabla() {
-    const tablaTorzs = document.getElementById("tabla-torzs");
-    tablaTorzs.innerHTML = "";
+    const eletkorCella = document.createElement("td");
+    eletkorCella.textContent = eletkor;
 
-    rekordok.forEach((rekord, index) => {
-        const sor = document.createElement("tr");
-
-        const nevCella = document.createElement("td");
-        nevCella.textContent = rekord.nev;
-
-        const korCella = document.createElement("td");
-        korCella.textContent = rekord.kor;
-
-        const torlesCella = document.createElement("td");
-        const torlesGomb = document.createElement("button");
-        torlesGomb.textContent = "Törlés";
-        torlesGomb.onclick = () => torolRekord(index);
-        torlesCella.appendChild(torlesGomb);
-
-        sor.appendChild(nevCella);
-        sor.appendChild(korCella);
-        sor.appendChild(torlesCella);
-
-        tablaTorzs.appendChild(sor);
+    const torlesCella = document.createElement("td");
+    const torlesGomb = document.createElement("button");
+    torlesGomb.textContent = "Törlés";
+    torlesGomb.addEventListener("click", () => {
+        tablaTartalom.removeChild(sor);
     });
-}
+    torlesCella.appendChild(torlesGomb);
 
-function szures() {
-    const kereso = document.getElementById("kereses").value.toLowerCase();
-    const sorok = document.getElementById("tabla-torzs").getElementsByTagName("tr");
+    sor.appendChild(nevCella);
+    sor.appendChild(eletkorCella);
+    sor.appendChild(torlesCella);
+
+    tablaTartalom.appendChild(sor);
+
+    nevInput.value = "";
+    eletkorInput.value = "";
+});
+
+szuroInput.addEventListener("input", () => {
+    const szuroSzoveg = szuroInput.value.toLowerCase();
+    const sorok = tablaTartalom.getElementsByTagName("tr");
 
     for (let sor of sorok) {
         const nev = sor.cells[0].textContent.toLowerCase();
-        sor.style.display = nev.includes(kereso) ? "" : "none";
+        sor.style.display = nev.includes(szuroSzoveg) ? "" : "none";
     }
-}
+});
