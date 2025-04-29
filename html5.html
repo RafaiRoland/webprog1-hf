@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 API</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><h1>Web-programozás-1 Előadás Házi feladat</h1></header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Főoldal</a></li>
+      <li><a href="tablazat.html">Táblázat</a></li>
+      <li class="aktiv"><a href="html5.html">HTML5 API</a></li>
+      <li><a href="chart.html">Diagram</a></li>
+    </ul>
+  </nav>
+  <aside><p>HTML5 példák</p></aside>
+  <div class="tartalom">
+    <h2>Geolocation</h2>
+    <button onclick="hely()">Jelenlegi helyzet</button>
+    <p id="geo"></p>
+
+    <h2>Helyi tárolás</h2>
+    <input type="text" id="adat" placeholder="Írj be valamit">
+    <button onclick="mentes()">Mentés</button>
+    <button onclick="betoltes()">Betöltés</button>
+    <p id="kimenet"></p>
+  </div>
+  <footer><p>Martinovic Lino (Y8M9S5), Rafai Roland (VLB1VG)</p></footer>
+
+  <script>
+    function hely() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          poz => document.getElementById("geo").textContent =
+            `Szélesség: ${poz.coords.latitude}, Hosszúság: ${poz.coords.longitude}`,
+          () => document.getElementById("geo").textContent = "Hozzáférés megtagadva."
+        );
+      } else {
+        document.getElementById("geo").textContent = "Nem támogatott.";
+      }
+    }
+
+    function mentes() {
+      const adat = document.getElementById("adat").value;
+      localStorage.setItem("adat", adat);
+    }
+
+    function betoltes() {
+      const adat = localStorage.getItem("adat");
+      document.getElementById("kimenet").textContent = adat ?? "Nincs mentett adat.";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Táblázat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><h1>Web-programozás-1 Előadás Házi feladat</h1></header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Főoldal</a></li>
+      <li class="aktiv"><a href="tablazat.html">Táblázat</a></li>
+      <li><a href="html5.html">HTML5 API</a></li>
+      <li><a href="chart.html">Diagram</a></li>
+    </ul>
+  </nav>
+  <aside><p>CRUD + szűrés táblázaton</p></aside>
+  <div class="tartalom">
+    <input type="text" id="szures" placeholder="Szűrés névre">
+    <button onclick="ujSor()">Új sor</button>
+    <table id="tablazat">
+      <thead>
+        <tr>
+          <th onclick="rendez(0)">Név</th>
+          <th onclick="rendez(1)">Életkor</th>
+          <th onclick="rendez(2)">Szak</th>
+          <th>Művelet</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Béla</td><td>20</td><td>Programtervező</td><td><button onclick="torol(this)">Törlés</button></td></tr>
+        <tr><td>Anna</td><td>22</td><td>Mérnök</td><td><button onclick="torol(this)">Törlés</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <footer><p>Martinovic Lino (Y8M9S5), Rafai Roland (VLB1VG)</p></footer>
+  <script src="tablazat.js"></script>
+</body>
+</html>
