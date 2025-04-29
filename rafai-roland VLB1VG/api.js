@@ -1,1 +1,0 @@
-let aktualisDatum = new Date();
